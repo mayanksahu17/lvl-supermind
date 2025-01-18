@@ -1,79 +1,96 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export default function InputForm() {
-  const [inputType, setInputType] = useState("text")
+type Message = {
+  role: "user" | "bot";
+  text: string;
+};
+
+export default function InputTextForm() {
+  const [messages, setMessages] = useState<Message[]>([]); // Explicit type for messages
+  const [inputValue, setInputValue] = useState("");
+
+  const sendMessage = async () => {
+    if (!inputValue.trim()) return;
+
+    const newMessage: Message = { role: "user", text: inputValue }; // Explicitly define message structure
+    setMessages((prev) => [...prev, newMessage]);
+
+    setInputValue("");
+
+    try {
+      const response = await fetch("/api/langflow/text", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inputValue }),
+      });
+
+      const data = await response.json();
+      const botMessage: Message = { role: "bot", text: data.message || "No response from API." };
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      const errorMessage: Message = { role: "bot", text: "An error occurred. Please try again." };
+      setMessages((prev) => [...prev, errorMessage]);
+    }
+  };
 
   return (
-    <Card className="bg-gray-800 text-white border-blue-500">
-      <CardHeader>
-        <CardTitle className="text-2xl text-blue-300">Create New Blog Post</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form className="space-y-6">
-          <div className="space-y-2">
-            <Label className="text-blue-300">Input Type</Label>
-            <RadioGroup
-              defaultValue="text"
-              onValueChange={(value) => setInputType(value)}
-              className="flex space-x-4"
+    <div className="flex flex-col items-center min-h-screen bg-[#022F40] text-white">
+      <Card className="w-full max-w-2xl mt-10 shadow-lg">
+        <CardHeader className="bg-[#022F40] border-b border-[#38AECC]">
+          <CardTitle className="text-2xl text-[#38AECC]">Langflow Chat</CardTitle>
+        </CardHeader>
+        <CardContent className="p-4">
+          <ScrollArea className="h-64 overflow-y-auto bg-[#011F2A] border border-[#38AECC] rounded-md p-4">
+            {messages.length > 0 ? (
+              messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`flex ${
+                    msg.role === "user" ? "justify-end" : "justify-start"
+                  } mb-4`}
+                >
+                  <div
+                    className={`max-w-xs p-3 rounded-lg ${
+                      msg.role === "user"
+                        ? "bg-[#38AECC] text-[#022F40]"
+                        : "bg-[#022F40] border border-[#38AECC] text-white"
+                    }`}
+                  >
+                    {msg.text}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-[#38AECC]">Start a conversation!</p>
+            )}
+          </ScrollArea>
+          <div className="flex items-center mt-4">
+            <Input
+              type="text"
+              placeholder="Type your message..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              className="flex-grow bg-[#011F2A] border-[#38AECC] text-white placeholder-[#38AECC] focus:ring-[#38AECC]"
+            />
+            <Button
+              onClick={sendMessage}
+              className="ml-4 bg-[#38AECC] text-[#022F40] hover:bg-[#2C8FAF] transition-all"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="text" id="text" />
-                <Label htmlFor="text" className="text-white">Text</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="file" id="file" />
-                <Label htmlFor="file" className="text-white">File Upload</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="video" id="video" />
-                <Label htmlFor="video" className="text-white">Video</Label>
-              </div>
-            </RadioGroup>
+              Send
+            </Button>
           </div>
-
-          {inputType === "text" && (
-            <div className="space-y-2">
-              <Label htmlFor="title" className="text-blue-300">Title</Label>
-              <Input id="title" placeholder="Enter blog title" className="bg-gray-700 text-white border-blue-500" />
-              <Label htmlFor="content" className="text-blue-300">Content</Label>
-              <Textarea
-                id="content"
-                placeholder="Enter your blog content here"
-                rows={10}
-                className="bg-gray-700 text-white border-blue-500"
-              />
-            </div>
-          )}
-
-          {inputType === "file" && (
-            <div className="space-y-2">
-              <Label htmlFor="file-upload" className="text-blue-300">Upload File</Label>
-              <Input id="file-upload" type="file" accept=".txt,.docx" className="bg-gray-700 text-white border-blue-500" />
-            </div>
-          )}
-
-          {inputType === "video" && (
-            <div className="space-y-2">
-              <Label htmlFor="video-upload" className="text-blue-300">Upload Video</Label>
-              <Input id="video-upload" type="file" accept="video/*" className="bg-gray-700 text-white border-blue-500" />
-            </div>
-          )}
-
-          <Button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white transition-all duration-300 transform hover:scale-105">
-            Submit
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-  )
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
-

@@ -6,6 +6,7 @@ const navItems = [
   { name: "Dashboard", icon: Home, href: "/dashboard" },
   { name: "Blog Posts", icon: FileText, href: "/dashboard/posts" },
   { name: "Videos", icon: Video, href: "/dashboard/videos" },
+  { name: "Text", icon: FileText, href: "/dashboard/create" },
   { name: "Analytics", icon: BarChart2, href: "/dashboard/analytics" },
   { name: "Settings", icon: Settings, href: "/dashboard/settings" },
 ]

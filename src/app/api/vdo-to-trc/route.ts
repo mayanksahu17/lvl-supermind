@@ -9,7 +9,7 @@ import { TranslationRequest ,
      MAX_TRANSCRIPT_LENGTH,
      DEFAULT_MODEL,
      DEFAULT_TEMPERATURE,
-     ValidationError,
+     ValidationError, 
      validateTranslationRequest,
      TranslationService
     } from '@/lib/utility';
@@ -52,6 +52,7 @@ export async function POST(req: NextRequest) {
           charCount: transcript.length
         }
       };
+    
   
       return NextResponse.json(response);
         
@@ -61,4 +62,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Internal Server Error" }, { status: SERVER_ERROR });
   
     }
+
+
 }

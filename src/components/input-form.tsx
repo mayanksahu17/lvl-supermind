@@ -12,29 +12,35 @@ type Message = {
 };
 
 export default function InputTextForm() {
-  const [messages, setMessages] = useState<Message[]>([]); // Explicit type for messages
+  const [messages, setMessages] = useState<Message[]>([]); // Conversation history
   const [inputValue, setInputValue] = useState("");
 
   const sendMessage = async () => {
     if (!inputValue.trim()) return;
 
-    const newMessage: Message = { role: "user", text: inputValue }; // Explicitly define message structure
-    setMessages((prev) => [...prev, newMessage]);
-
+    // Add user's message to the conversation history
+    const userMessage: Message = { role: "user", text: inputValue };
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
 
     try {
+      // Send the entire conversation history to the backend
       const response = await fetch("/api/langflow/text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ inputValue }),
+        body: JSON.stringify({ messages: [...messages, userMessage] }),
       });
 
       const data = await response.json();
-      const botMessage: Message = { role: "bot", text: data.message || "No response from API." };
-      setMessages((prev) => [...prev, botMessage]);
+      if (data.message) {
+        // Add bot's response to the conversation history
+        const botMessage: Message = { role: "bot", text: data.message };
+        setMessages((prev) => [...prev, botMessage]);
+      } else {
+        throw new Error("No response from API.");
+      }
     } catch (error) {
       console.error("Error sending message:", error);
       const errorMessage: Message = { role: "bot", text: "An error occurred. Please try again." };

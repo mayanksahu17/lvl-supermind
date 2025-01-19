@@ -2,8 +2,8 @@
 
 ## Project Overview
 
-Team Name : Codekaar
-Team Members: Mayank Sahu, Shivi Tiwari, Diya Verma, Yashvardhan Sharma.
+- Team Name : Codekaar
+- Team Members: Mayank Sahu, Shivi Tiwari, Diya Verma, Yashvardhan Sharma.
 
 The **Coffee Translates** is a web application designed to streamline the process of creating multilingual blogs. The platform allows users to input text and video content, automatically transcribe videos to text, edit them on the go and translate content into 10 regional Indian languages, and publish SEO-optimized blogs.
 

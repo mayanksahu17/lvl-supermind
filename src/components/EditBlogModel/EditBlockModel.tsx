@@ -32,10 +32,10 @@ const EditBlogModal: FC<EditBlogModalProps> = ({ isOpen, onClose, blog, onSave }
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Edit Blog Post"
-      className="max-w-2xl mx-auto mt-20 bg-white rounded-lg shadow-xl overflow-y-auto"
+      className="max-w-2xl mx-auto mt-20 bg-white rounded-lg shadow-xl overflow-y-auto w-full"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
     >
-      <div className="p-8">
+      <div className="p-8 w-full">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-[#022F40]">
             {blog.id ? 'Edit Blog Post' : 'Create New Blog Post'}

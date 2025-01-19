@@ -2,6 +2,8 @@ import { Metadata } from "next"
 import DashboardLayout from "@/components/dashboardlayout"
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
+import Image from "next/image"
+import AnimatedIcons from "@/components/animatedicons/animatedicons"
 
 export const metadata: Metadata = {
   title: "Blog Dashboard",
@@ -12,14 +14,40 @@ export default function DashboardPage() {
   return (
     <DashboardLayout>
       <div className="container mx-auto py-10 space-y-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-blue-300">Welcome to Your Dashboard</h1>
-          <Link href="/dashboard/create">
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
-              Get Started
-            </Button>
-          </Link>
+      <div className="relative">
+        <Image
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Group%205-8GybhDK7M2NBt8zCPBsuISRBoKrdTd.svg"
+          alt=""
+          width={1850}
+          height={628}
+          className="w-full h-auto"
+          role="presentation"
+        />
+        
+        <div className="absolute inset-0 flex items-center px-12">
+          <div className="flex items-center justify-between w-full">
+            <div className="space-y-8">
+              <h1 className="text-5xl font-bold max-w-2xl leading-tight">
+                Break Language Barriers,{" "}
+                <br />
+                One Word at a{" "}
+                <span className="bg-blue-100 px-2 rounded">Time.</span>
+              </h1>
+
+              <div className="flex gap-4">
+                <button className="px-8 py-3 bg-white border text-black font-semibold border-black/10 rounded-full hover:bg-gray-50 transition-colors">
+                  Upload
+                </button>
+                <button className="px-8 py-3 bg-white text-black font-semibold border border-black/10 rounded-full hover:bg-gray-50 transition-colors">
+                  Drafts
+                </button>
+              </div>
+            </div>
+
+            <AnimatedIcons/>
+          </div>
         </div>
+      </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <DashboardCard title="Total Posts" value="15" />
           <DashboardCard title="Languages" value="10" />

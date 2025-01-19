@@ -43,10 +43,10 @@ export default function InputTextForm() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-[#022F40] text-white">
-      <Card className="w-full max-w-2xl mt-10 shadow-lg">
+    <div className="flex flex-col items-center min-h-screen bg-[#e4e9eb] text-gray-700">
+      <Card className="w-full max-w-2xl mt-10 shadow-xl">
         <CardHeader className="bg-[#022F40] border-b border-[#38AECC]">
-          <CardTitle className="text-2xl text-[#38AECC]">Langflow Chat</CardTitle>
+          <CardTitle className="text-2xl text-[#38AECC]">Lingoo!!</CardTitle>
         </CardHeader>
         <CardContent className="p-4">
           <ScrollArea className="h-64 overflow-y-auto bg-[#011F2A] border border-[#38AECC] rounded-md p-4">
